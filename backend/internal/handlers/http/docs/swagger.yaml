@@ -1,0 +1,331 @@
+basePath: /api/photos
+definitions:
+  EmptyResponseDTO:
+    properties:
+      code:
+        example: 200
+        type: integer
+      message:
+        example: Operação realizada com sucesso
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+  PagedDTO-Photo:
+    properties:
+      has_more:
+        example: false
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/Photo'
+        type: array
+      page_count:
+        example: 10
+        type: integer
+      page_token:
+        type: string
+    type: object
+  Photo:
+    properties:
+      createdAt:
+        example: "2023-04-07T16:45:30Z"
+        type: string
+      photoId:
+        example: 2023050701GXEH91YBVV40C1FK50S1P0KC
+        type: string
+      title:
+        example: Supermercado
+        type: string
+      url:
+        example: https://images.com.br/image.jpg
+        type: string
+      userId:
+        example: e8ec3241-03b4-4aed-99d5-d72e1922d9b8
+        type: string
+    required:
+    - photoId
+    - title
+    - userId
+    type: object
+  ResponseDTO-PagedDTO-Photo:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        $ref: '#/definitions/PagedDTO-Photo'
+      message:
+        example: Operação realizada com sucesso
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+  ResponseDTO-Photo:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        $ref: '#/definitions/Photo'
+      message:
+        example: Operação realizada com sucesso
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+  ResponseDTO-UserToken:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        $ref: '#/definitions/UserToken'
+      message:
+        example: Operação realizada com sucesso
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+  UserLoginChangeDTO:
+    properties:
+      email:
+        type: string
+      new_password:
+        minLength: 6
+        type: string
+      session:
+        type: string
+    required:
+    - email
+    - new_password
+    - session
+    type: object
+  UserLoginDTO:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  UserToken:
+    properties:
+      AccessToken:
+        type: string
+      AuthChallenge:
+        type: string
+      AuthSession:
+        type: string
+      RefreshToken:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: photos Rest API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: photos Rest API
+  version: "1.0"
+paths:
+  /auth/change:
+    post:
+      description: Change password
+      parameters:
+      - description: Login payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/UserLoginChangeDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ResponseDTO-UserToken'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Change password
+      tags:
+      - Auth
+  /auth/login:
+    post:
+      description: User login
+      parameters:
+      - description: Login payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/UserLoginDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ResponseDTO-UserToken'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: User login
+      tags:
+      - Auth
+  /photos:
+    get:
+      description: List photos
+      parameters:
+      - description: Number of records
+        in: query
+        name: limit
+        required: true
+        type: number
+      - description: Pagination token
+        in: query
+        name: page_token
+        type: string
+      - description: Photo due date
+        in: query
+        name: due_date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ResponseDTO-PagedDTO-Photo'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: List photos
+      tags:
+      - Photos
+    post:
+      description: Create a new photo record
+      parameters:
+      - description: Photo payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/Photo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ResponseDTO-Photo'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Create a photo
+      tags:
+      - Photos
+  /photos/{photoId}:
+    delete:
+      description: Delete photo
+      parameters:
+      - description: Photo id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/EmptyResponseDTO'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Delete photo
+      tags:
+      - Photos
+    get:
+      description: Get photo by id
+      parameters:
+      - description: Photo id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ResponseDTO-Photo'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get photo by id
+      tags:
+      - Photos
+    put:
+      description: Update/Create a photo record
+      parameters:
+      - description: Photo id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Photo payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/Photo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ResponseDTO-Photo'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Put a photo
+      tags:
+      - Photos
+securityDefinitions:
+  ApiKeyAuth:
+    description: Type 'Bearer ' and than your API token
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
