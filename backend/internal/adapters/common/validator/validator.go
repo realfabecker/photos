@@ -1,7 +1,6 @@
 package validator
 
 import (
-	"fmt"
 	"math/rand"
 	"regexp"
 	"time"
@@ -11,9 +10,23 @@ import (
 )
 
 func NewValidator() *validator.Validate {
-	v := validator.New()
+	v := validator.New(validator.WithRequiredStructEnabled())
 	v.RegisterValidation("ISO8601", iso8601)
+	v.RegisterValidation("imagex_name", imagexName)
+	v.RegisterValidation("imagex_url", imagexUrl)
 	return v
+}
+
+func imagexUrl(fl validator.FieldLevel) bool {
+	regString := `https?://.*(jpe?g|png)$`
+	reg := regexp.MustCompile(regString)
+	return reg.MatchString(fl.Field().String())
+}
+
+func imagexName(fl validator.FieldLevel) bool {
+	regString := `(jpe?g|png)$`
+	reg := regexp.MustCompile(regString)
+	return reg.MatchString(fl.Field().String())
 }
 
 func iso8601(fl validator.FieldLevel) bool {
@@ -25,21 +38,4 @@ func iso8601(fl validator.FieldLevel) bool {
 func NewULID(t time.Time) string {
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
 	return ulid.MustNew(ulid.Timestamp(t), entropy).String()
-}
-
-func DateParse(t string) (time.Time, error) {
-	layouts := []string{
-		"2006-01-02T15:04:05.000-07:00",
-		"2006-01-02T15:04:05-07:00",
-		"2006-01-02T15:04:05.000Z",
-		"2006-01-02T15:04:05Z",
-		"2006-01-02T15:04:05",
-		"2006-01-02",
-	}
-	for _, l := range layouts {
-		if d, err := time.Parse(l, t); err == nil {
-			return d, nil
-		}
-	}
-	return time.Time{}, fmt.Errorf("unable to parse date %s, unrecognized format", t)
 }

@@ -15,17 +15,17 @@ import (
 	corpts "github.com/realfabecker/photos/internal/core/ports"
 )
 
-type WalletDynamoDbRepository struct {
+type PhotoDynamodDBRepository struct {
 	db    *dynamodb.Client
 	table string
 	app   string
 }
 
 func NewWalletDynamoDBRepository(db *dynamodb.Client, table string, app string) (corpts.PhotoRepository, error) {
-	return &WalletDynamoDbRepository{db, table, app}, nil
+	return &PhotoDynamodDBRepository{db, table, app}, nil
 }
 
-func (u *WalletDynamoDbRepository) ListPhotos(user string, q cordom.PhotoPagedDTOQuery) (*cordom.PagedDTO[cordom.Photo], error) {
+func (u *PhotoDynamodDBRepository) ListPhotos(user string, q cordom.PhotoPagedDTOQuery) (*cordom.PagedDTO[cordom.Photo], error) {
 	cipher := fmt.Sprintf("%s%d", user, q.Limit)
 	k, err := dynamo.DecodePageToken(q.PageToken, cipher)
 	if err != nil {
@@ -74,7 +74,7 @@ func (u *WalletDynamoDbRepository) ListPhotos(user string, q cordom.PhotoPagedDT
 	return &dto, nil
 }
 
-func (u *WalletDynamoDbRepository) CreatePhoto(p *cordom.Photo) (*cordom.Photo, error) {
+func (u *PhotoDynamodDBRepository) CreatePhoto(p *cordom.Photo) (*cordom.Photo, error) {
 	pd := photo{Photo: p}
 
 	pd.PhotoId = time.Now().Format("20060102") + validator.NewULID(time.Now())
@@ -98,7 +98,7 @@ func (u *WalletDynamoDbRepository) CreatePhoto(p *cordom.Photo) (*cordom.Photo, 
 	return pd.Photo, nil
 }
 
-func (u *WalletDynamoDbRepository) GetPhotoById(user string, photo string) (*cordom.Photo, error) {
+func (u *PhotoDynamodDBRepository) GetPhotoById(user string, photo string) (*cordom.Photo, error) {
 	out, err := u.db.GetItem(context.TODO(), &dynamodb.GetItemInput{
 		Key: map[string]types.AttributeValue{
 			"PK": &types.AttributeValueMemberS{
@@ -124,7 +124,7 @@ func (u *WalletDynamoDbRepository) GetPhotoById(user string, photo string) (*cor
 	return &dto, nil
 }
 
-func (u *WalletDynamoDbRepository) DeletePhoto(user string, photo string) error {
+func (u *PhotoDynamodDBRepository) DeletePhoto(user string, photo string) error {
 	_, err := u.db.DeleteItem(context.TODO(), &dynamodb.DeleteItemInput{
 		Key: map[string]types.AttributeValue{
 			"PK": &types.AttributeValueMemberS{
@@ -139,7 +139,7 @@ func (u *WalletDynamoDbRepository) DeletePhoto(user string, photo string) error 
 	return err
 }
 
-func (u *WalletDynamoDbRepository) PutPhoto(p *cordom.Photo) (*cordom.Photo, error) {
+func (u *PhotoDynamodDBRepository) PutPhoto(p *cordom.Photo) (*cordom.Photo, error) {
 	r, err := u.GetPhotoById(p.UserId, p.PhotoId)
 	if err != nil {
 		return nil, err

@@ -55,9 +55,9 @@ func init() {
 
 	Container.Provide(func(cnf *cordom.Config, client *s3.Client) (corpts.MidiaSigner, error) {
 		if cnf.BucketName == "" {
-			return nil, fmt.Errorf("bucket name is required for midia signer")
+			return nil, fmt.Errorf("bucket name is required for midia bucket")
 		}
-		return phtsrv.NewS3MidiaSigner(cnf.BucketName, client), nil
+		return phtsrv.NewS3MidiaSigner(cnf.BucketName, "photos", client), nil
 	})
 
 	Container.Provide(func() corpts.CacheHandler {

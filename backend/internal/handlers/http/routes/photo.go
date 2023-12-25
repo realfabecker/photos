@@ -188,7 +188,7 @@ func (w *PhotoController) DeletePhoto(c *fiber.Ctx) error {
 //	@Tags			Photos
 //	@Security		ApiKeyAuth
 //	@Produce		json
-//	@Param			id		path		string				true	"Photo id"
+//	@Param			id		path		string			true	"Photo id"
 //	@Param			request	body		cordom.Photo	true	"Photo payload"
 //	@Success		200		{object}	cordom.ResponseDTO[cordom.Photo]
 //	@Failure		400
@@ -235,28 +235,31 @@ func (w *PhotoController) PutPhoto(c *fiber.Ctx) error {
 //	@Tags			Photos
 //	@Security		ApiKeyAuth
 //	@Produce		json
-//	@Param			fileName	path		string	true	"Filename"
-//	@Success		200	{object}
+//	@Param			fileName	path	string	true	"Filename"
+//	@Success		200			{object}
 //	@Failure		400
 //	@Failure		500
-//	@Router			/signer/upload-url [get]
+//	@Router			/bucket/upload-url [get]
 func (w *PhotoController) GetUploadUrl(c *fiber.Ctx) error {
-	p := cordom.Photo{}
-	if err := c.ParamsParser(&p); err != nil {
+	q := struct {
+		File string `json:"file" query:"file" validate:"required,imagex_name"`
+	}{}
+
+	if err := c.QueryParser(&q); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
 	v := validator.NewValidator()
-	if err := v.StructPartial(p, "fileName"); err != nil {
+	if err := v.StructPartial(q, "File"); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	_, ok := c.Locals("user").(*jwt.RegisteredClaims)
+	user, ok := c.Locals("user").(*jwt.RegisteredClaims)
 	if !ok {
 		return fiber.NewError(fiber.ErrUnauthorized.Code)
 	}
 
-	url, err := w.service.GetUploadUrl(p.FileName)
+	url, err := w.service.GetUploadUrl(user.Subject, q.File)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	} else if url == "" && err == nil {

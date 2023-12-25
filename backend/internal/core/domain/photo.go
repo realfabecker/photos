@@ -9,15 +9,15 @@ import (
 type Photo struct {
 	PhotoId   string `json:"photoId" validate:"required" example:"2023050701GXEH91YBVV40C1FK50S1P0KC"`
 	UserId    string `json:"userId" validate:"required" example:"e8ec3241-03b4-4aed-99d5-d72e1922d9b8"`
+	FileName  string `json:"fileName" validate:"required,imagex_name" example:"image.jpg"`
 	Title     string `json:"title" validate:"required" example:"Supermercado"`
+	Url       string `json:"url" validate:"required,imagex_url" example:"https://images.com.br/image.jpg"`
 	CreatedAt string `json:"createdAt" example:"2023-04-07T16:45:30Z"`
-	Url       string `json:"url" example:"https://images.com.br/image.jpg"`
-	FileName  string `json:"fileName" example:"image.jpg"`
 } // @name	Photo
 
 type PhotoPagedDTOQuery struct {
 	PagedDTOQuery
-	CreatedAt *int32       `query:"due_date" validate:"omitempty" example:"2023"`
+	CreatedAt *int32       `query:"created_at" validate:"omitempty" example:"2023"`
 	Period    *PhotoPeriod `query:"period" validate:"omitempty,oneof=this_week this_month last_month next_month" example:"this_month"`
 } //	@name	PhotoPagedDTOQuery
 

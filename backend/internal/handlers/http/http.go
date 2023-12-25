@@ -104,7 +104,7 @@ func (a *HttpHandler) Register() error {
 	auth.Post("/login", a.usersController.Login)
 	auth.Post("/change", a.usersController.Change)
 
-	pics := photos.Group("/pics")
+	pics := photos.Group("/midia")
 	pics.Use(a.authHandler)
 	pics.Post("/", a.photoController.CreatePhoto)
 	pics.Get("/", a.photoController.ListPhotos)
@@ -112,7 +112,7 @@ func (a *HttpHandler) Register() error {
 	pics.Delete("/:photoId", a.photoController.DeletePhoto)
 	pics.Put("/:photoId", a.photoController.PutPhoto)
 
-	sign := photos.Group("/signer")
+	sign := photos.Group("/bucket")
 	sign.Use(a.authHandler)
 	sign.Get("/upload-url", a.photoController.GetUploadUrl)
 	return nil
