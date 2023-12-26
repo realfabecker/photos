@@ -34,3 +34,8 @@ export enum RoutesEnum {
   Login = "/login",
   Photos = "/photos",
 }
+
+export enum ProviderEnum {
+  Lambda = "lambda",
+  Picsum = "picsum",
+}

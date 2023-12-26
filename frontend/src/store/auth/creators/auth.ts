@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Container } from "inversify";
 import { IAuthService, Types } from "@core/ports/ports";
-import { NavigateFunction } from "react-router";
+import { NavigateFunction, Location } from "react-router";
 import { RoutesEnum } from "@core/domain/domain";
 
 export const getActionAuthLogin = createAsyncThunk(
@@ -11,13 +11,19 @@ export const getActionAuthLogin = createAsyncThunk(
       email,
       password,
       navigate,
-    }: { email: string; password: string; navigate: NavigateFunction },
+      location,
+    }: {
+      email: string;
+      password: string;
+      navigate: NavigateFunction;
+      location: Location;
+    },
     { extra }
   ) => {
     const container = (<any>extra).container as Container;
     const authService = container.get<IAuthService>(Types.AuthService);
     await authService.login({ email, password });
-    navigate(RoutesEnum.Photos);
+    navigate(RoutesEnum.Photos + location.search);
   }
 );
 

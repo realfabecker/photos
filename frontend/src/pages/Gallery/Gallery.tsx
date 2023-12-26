@@ -23,11 +23,15 @@ const ActionsSection = (opts: {
   return (
     <div className="actions">
       <button
-        disabled={opts.photos.status == ActionStatus.LOADING}
+        disabled={
+          opts.photos.status == ActionStatus.LOADING || !opts.photos.has_more
+        }
         onClick={opts.onClickLoadMore}
       >
         {opts.photos.status == ActionStatus.LOADING
           ? "Carregando..."
+          : !opts.photos.has_more
+          ? "Não há mais fotos"
           : "Carregar mais fotos"}
       </button>
     </div>
@@ -73,9 +77,7 @@ export default function Gallery() {
         })}
       </section>
 
-      {photos.has_more && (
-        <ActionsSection photos={photos} onClickLoadMore={handleClickLoadMore} />
-      )}
+      <ActionsSection photos={photos} onClickLoadMore={handleClickLoadMore} />
     </>
   );
 }

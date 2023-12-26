@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@store/store";
 import { getActionAuthLogin } from "@store/auth/creators/auth";
 import { ActionStatus } from "@core/domain/domain";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 export default function Login() {
   const dispatch = useAppDispatch();
+  const location = useLocation();
   const navigate = useNavigate();
   const store = useAppSelector((state) => state["auth"]["auth/login"]);
   const [email, setEmail] = useState("");
@@ -18,7 +19,9 @@ export default function Login() {
         id="login"
         onSubmit={(e) => {
           e.preventDefault();
-          dispatch(getActionAuthLogin({ email, password: passw, navigate }));
+          dispatch(
+            getActionAuthLogin({ email, password: passw, navigate, location })
+          );
         }}
       >
         <div className="input-wrapper">

@@ -7,7 +7,7 @@ export class LocalAuthService implements IAuthService {
   constructor(
     private readonly baseUrl: string = import.meta.env.VITE_API_BASE_URL,
     private readonly storage = localStorage,
-    private readonly authKey = "photos"
+    private readonly authKey = "_lauth"
   ) {}
 
   async login({
