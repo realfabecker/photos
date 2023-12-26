@@ -3,8 +3,12 @@ import { Photo as TPhoto } from "@core/domain/domain.ts";
 export default function Photo(opts: { photo: TPhoto; delay?: number }) {
   const { photo } = opts;
   return (
-    // @ts-ignore
-    <figure className="item" style={{ "--delay": `${opts.delay || "0"}s` }}>
+    <figure
+      id={photo.id}
+      className="item"
+      // @ts-ignore
+      style={{ "--delay": `${opts.delay || "0"}s` }}
+    >
       <img src={photo.url} alt={photo.title} />
 
       <figcaption className="details">
@@ -13,6 +17,11 @@ export default function Photo(opts: { photo: TPhoto; delay?: number }) {
           {photo.tags.map((t) => (
             <span key={t}>{t}</span>
           ))}
+        </div>
+        <div className="data">
+          <span>
+            {photo.createdAt.substring(0, 10).split("-").reverse().join("/")}
+          </span>
         </div>
       </figcaption>
     </figure>

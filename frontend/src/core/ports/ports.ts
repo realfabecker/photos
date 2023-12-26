@@ -11,6 +11,9 @@ export interface IPhotoService {
     limit: number;
     token?: string;
   }): Promise<ResponseDTO<PagedDTO<Photo>>>;
+  createPhoto(photo: Partial<Photo>): Promise<ResponseDTO<Photo>>;
+  getUploadUrl(name: string): Promise<string>;
+  uploadFile(file: File, url: string): Promise<void>;
 }
 
 export interface IAuthService {

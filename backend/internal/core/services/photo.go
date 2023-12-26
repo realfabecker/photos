@@ -62,6 +62,13 @@ func (s *PhotoService) GetPhotoById(user string, photo string) (*cordom.Photo, e
 }
 
 func (s *PhotoService) DeletePhoto(user string, photo string) error {
+	p, err := s.PhotoRepository.GetPhotoById(user, photo)
+	if err != nil {
+		return err
+	}
+	if err := s.MidiaSigner.DeleteObject(p.Url); err != nil {
+		return err
+	}
 	return s.PhotoRepository.DeletePhoto(user, photo)
 }
 

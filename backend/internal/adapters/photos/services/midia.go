@@ -14,6 +14,7 @@ import (
 type S3MidiaSigner struct {
 	presignCliente *s3.PresignClient
 	keyPrefix      string
+	s3Client       *s3.Client
 	bucketName     string
 }
 
@@ -21,6 +22,7 @@ func NewS3MidiaSigner(bucketName string, keyPrefix string, client *s3.Client) po
 	return &S3MidiaSigner{
 		bucketName:     bucketName,
 		keyPrefix:      keyPrefix,
+		s3Client:       client,
 		presignCliente: s3.NewPresignClient(client),
 	}
 }
@@ -66,4 +68,23 @@ func (s S3MidiaSigner) PutObjectUrl(name string, lifetime int64) (string, error)
 		return "", err
 	}
 	return request.URL, nil
+}
+
+func (s S3MidiaSigner) DeleteObject(url string) error {
+	re := regexp.MustCompile(`https://(?P<bucket>.*).s3.us-east-1.amazonaws.com/(?P<key>.*)`)
+	ma := re.FindStringSubmatch(url)
+	ur := make(map[string]string)
+	for i, name := range re.SubexpNames() {
+		ur[name] = ma[i]
+	}
+	if ur == nil || ur["bucket"] == "" {
+		return fmt.Errorf("file url is not a valid bucket object")
+	}
+	if _, err := s.s3Client.DeleteObject(context.TODO(), &s3.DeleteObjectInput{
+		Bucket: aws.String(ur["bucket"]),
+		Key:    aws.String(ur["key"]),
+	}); err != nil {
+		return err
+	}
+	return nil
 }

@@ -9,6 +9,8 @@ export interface State<T = any> {
   data?: T;
   has_more?: boolean;
   page_token?: string;
+  modal?: "open" | "closed";
+  upload_url?: string;
   status: ActionStatus;
   error?: { message: string };
 }

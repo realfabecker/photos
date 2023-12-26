@@ -28,7 +28,7 @@ export class PicsumPhotoService implements IPhotoService {
       id: p.id,
       tags: ["tag"],
       title: p.author,
-      createdAt: new Date().toString(),
+      createdAt: new Date().toISOString(),
     }));
 
     return {
@@ -39,5 +39,20 @@ export class PicsumPhotoService implements IPhotoService {
         has_more: true,
       },
     };
+  }
+
+  async createPhoto(photo: Partial<Photo>): Promise<ResponseDTO<Photo>> {
+    console.log({ photo });
+    return Promise.reject("not implemented yet");
+  }
+
+  async getUploadUrl(name: string): Promise<string> {
+    console.log({ name });
+    return Promise.reject("not implemented yet");
+  }
+
+  async uploadFile(file: File, url: string): Promise<void> {
+    console.log({ file, url });
+    return Promise.reject("not implemented yet");
   }
 }

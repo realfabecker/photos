@@ -5,6 +5,7 @@ import Gallery from "@pages/Gallery/Gallery.tsx";
 import Login from "@pages/Login/Login.tsx";
 
 import "./App.css";
+import { Upload } from "@pages/Gallery/Upload.tsx";
 
 function App() {
   return (
@@ -14,7 +15,15 @@ function App() {
           <Route path={RoutesEnum.Login} element={<Login />} />
         </Route>
         <Route element={<PrivLayout />}>
-          <Route path={RoutesEnum.Photos} element={<Gallery />} />
+          <Route
+            path={RoutesEnum.Photos}
+            element={
+              <>
+                <Upload />
+                <Gallery />
+              </>
+            }
+          />
         </Route>
         <Route path="*" element={<Navigate to={RoutesEnum.Photos} />}></Route>
       </Routes>

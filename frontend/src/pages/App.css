@@ -9,6 +9,7 @@
   font-family: 'Mulish', sans-serif;
   --hue: 240;
   --color-base-white: hsl(0,0%,100%);
+  --color-base-red: hsl(0, 100%, 50%);
   --color-base-gray-100: hsl(0,0%,96%);
   --color-base-gray-300: hsl(var(--hue),6%,50%);
   --color-base-gray-500: hsl(0,0%,24%);
@@ -60,6 +61,14 @@ header .search {
   flex: 1
 }
 
+header img.upload {
+  cursor: pointer;
+}
+
+header img.upload:hover {
+  transform: scale(1.1);
+}
+
 nav ul {
   list-style: none;
   font-size: 1.8rem;
@@ -90,6 +99,26 @@ nav ul li.active {
 
 .input-wrapper input::placeholder {
   color: var(--color-base-gray-500);
+}
+
+.input-wrapper-file {
+  padding: 1.6rem;
+  background-color: var(--color-base-gray-100);
+  border: 0;
+  border-radius: .6rem;
+  font-size: 1.6rem;
+  opacity: .56;
+  font-weight: 600;
+}
+
+.input-wrapper-file label {
+  display: block;
+  cursor: pointer;
+  width: 100%;
+}
+
+.input-wrapper-file input {
+  display: none;
 }
 
 .avatar {
@@ -207,6 +236,13 @@ main h1 {
   text-transform: uppercase;
 }
 
+.details .data {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 1.2rem;
+  color: var(--color-base-gray-300);
+}
+
 .actions button {
   width: 100%;
   font-family: 'Mulish', sans-serif;
@@ -227,6 +263,34 @@ footer p {
   text-align: center;
   padding: 1.6rem;
   font-weight: 600;
+}
+
+/*
+ Upload
+ */
+form#upload {
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+form#upload div.input-wrapper {
+  border: 1px solid black;
+}
+
+
+form#upload div.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: .8rem;
+  border: none;
+  color: var(--color-base-red);
+}
+
+form#upload button {
+  width: 100%;
 }
 
 @keyframes appear {

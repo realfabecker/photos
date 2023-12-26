@@ -3,14 +3,16 @@ import { inject, injectable } from "inversify";
 import { type IAuthService, IPhotoService, Types } from "@core/ports/ports.ts";
 import { PagedDTO, Photo, ResponseDTO } from "@core/domain/domain.ts";
 
-type SintesePaged<T> = {
+type SinteseResDTO<T = Record<string, any>> = {
   status: "success" | "error";
-  data: {
-    page_count: number;
-    items: T[];
-    has_more: boolean;
-    page_token?: string;
-  };
+  data: T;
+};
+
+type SintesePagedDTO<T> = {
+  page_count: number;
+  items: T[];
+  has_more: boolean;
+  page_token?: string;
 };
 
 type SintesePhoto = {
@@ -40,7 +42,9 @@ export class SintesePhotoService implements IPhotoService {
     const res = await fetch(`${this.baseUrl}/midia?${params.toString()}`, {
       headers: { Authorization: `Bearer ${this.auth.getAccessToken()}` },
     });
-    const data = (await res.json()) as SintesePaged<SintesePhoto>;
+    const data = (await res.json()) as SinteseResDTO<
+      SintesePagedDTO<SintesePhoto>
+    >;
     const items: Photo[] = data.data.items.map((p) => ({
       url: p.url,
       id: p.photoId,
@@ -56,6 +60,45 @@ export class SintesePhotoService implements IPhotoService {
         page_token: data.data.page_token,
         has_more: data.data.has_more,
       },
+    };
+  }
+
+  async getUploadUrl(name: string): Promise<string> {
+    await new Promise((resolve) => setTimeout(() => resolve(true), 300));
+    const res = await fetch(`${this.baseUrl}/bucket/upload-url?file=${name}`, {
+      headers: { Authorization: `Bearer ${this.auth.getAccessToken()}` },
+    });
+    const data = (await res.json()) as SinteseResDTO<{ url: string }>;
+    return data.data.url;
+  }
+
+  async uploadFile(file: File, url: string): Promise<void> {
+    await new Promise((resolve) => setTimeout(() => resolve(true), 300));
+    const res = await fetch(url, { method: "PUT", body: file });
+    if (!res.ok) throw new Error("unable to upload file");
+  }
+
+  async createPhoto(photo: Partial<Photo>): Promise<ResponseDTO<Photo>> {
+    const res = await fetch(`${this.baseUrl}/midia`, {
+      headers: {
+        Authorization: `Bearer ${this.auth.getAccessToken()}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(photo),
+      method: "POST",
+    });
+    const data = (await res.json()) as SinteseResDTO<SintesePhoto>;
+    const p: Photo = {
+      url: data.data.url,
+      id: data.data.photoId,
+      tags: ["tag"],
+      title: data.data.title,
+      createdAt: data.data.createdAt,
+    };
+
+    return {
+      status: "success",
+      data: p,
     };
   }
 }

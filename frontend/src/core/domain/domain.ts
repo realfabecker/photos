@@ -14,6 +14,7 @@ export type Photo = {
   id: string;
   tags: string[];
   url: string;
+  fileName?: string;
   title: string;
   createdAt: string;
 };
@@ -38,4 +39,9 @@ export enum RoutesEnum {
 export enum ProviderEnum {
   Lambda = "lambda",
   Picsum = "picsum",
+}
+
+export enum ModalState {
+  Open = "open",
+  Closed = "closed",
 }
