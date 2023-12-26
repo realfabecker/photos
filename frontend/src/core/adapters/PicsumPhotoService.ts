@@ -12,7 +12,7 @@ type PicsumPhoto = {
 };
 
 @injectable()
-export class PhotoPicsumService implements IPhotoService {
+export class PicsumPhotoService implements IPhotoService {
   async fetchPhotos(opts: {
     page: number;
     limit: number;

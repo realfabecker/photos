@@ -3,9 +3,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import { ActionStatus } from "@core/domain/domain";
 import { container } from "@core/container";
 import photoSlice from "@store/photos/reducers/photos";
+import authSlice from "@store/auth/reducers/auth";
 
 export interface State<T = any> {
   data?: T;
+  has_more?: boolean;
   status: ActionStatus;
   error?: { message: string };
 }
@@ -17,6 +19,7 @@ export const store = configureStore({
     }),
   reducer: {
     photos: photoSlice,
+    auth: authSlice,
   },
 });
 

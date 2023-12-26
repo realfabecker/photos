@@ -72,7 +72,9 @@ export default function Gallery() {
         })}
       </section>
 
-      <ActionsSection photos={photos} onClickLoadMore={handleClickLoadMore} />
+      {photos.has_more && (
+        <ActionsSection photos={photos} onClickLoadMore={handleClickLoadMore} />
+      )}
     </>
   );
 }

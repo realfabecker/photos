@@ -1,28 +1,17 @@
-const Nav = () => {
+import { useInjection } from "inversify-react";
+import { IAuthService, Types } from "@core/ports/ports.ts";
+
+const Nav = (opts: { isLoggedIn: boolean }) => {
   return (
     <nav>
       <img src="/images/logo.svg" alt="Logotipo de câmera" className="logo" />
 
-      <ul>
-        <li className="active">Galeria</li>
-      </ul>
+      {opts.isLoggedIn && (
+        <ul>
+          <li className="active">Galeria</li>
+        </ul>
+      )}
     </nav>
-  );
-};
-
-const Search = () => {
-  return (
-    <form className="search">
-      <div className="input-wrapper">
-        <label htmlFor="search">Pesquise por imagens e coleções</label>
-        <input
-          type="text"
-          name="search"
-          id="search"
-          placeholder="Pesquise por imagens e coleções"
-        />
-      </div>
-    </form>
   );
 };
 
@@ -37,11 +26,12 @@ const Avatar = () => {
 };
 
 export default function Header() {
+  const service = useInjection<IAuthService>(Types.AuthService);
+  const isLoggedIn = service.isLoggedIn();
   return (
-    <header className="container">
-      <Nav />
-      <Search />
-      <Avatar />
+    <header className={`container ${isLoggedIn ? "private" : "public"}`}>
+      <Nav isLoggedIn={isLoggedIn} />
+      {service.isLoggedIn() && <Avatar />}
     </header>
   );
 }

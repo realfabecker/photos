@@ -24,3 +24,13 @@ export enum ActionStatus {
   ERROR = "error",
   LOADING = "loading",
 }
+
+export interface LoginDTO {
+  RefreshToken: string;
+  AccessToken: string;
+}
+
+export enum RoutesEnum {
+  Login = "/login",
+  Photos = "/photos",
+}
