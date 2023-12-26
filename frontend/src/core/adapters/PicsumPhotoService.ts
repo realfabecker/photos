@@ -16,6 +16,7 @@ export class PicsumPhotoService implements IPhotoService {
   async fetchPhotos(opts: {
     page: number;
     limit: number;
+    token?: string;
   }): Promise<ResponseDTO<PagedDTO<Photo>>> {
     const res = await fetch(
       `https://picsum.photos/v2/list?page=${opts.page}&limit=${opts.limit}`

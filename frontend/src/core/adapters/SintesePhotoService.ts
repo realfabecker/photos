@@ -9,6 +9,7 @@ type SintesePaged<T> = {
     page_count: number;
     items: T[];
     has_more: boolean;
+    page_token?: string;
   };
 };
 
@@ -30,9 +31,13 @@ export class SintesePhotoService implements IPhotoService {
   async fetchPhotos(opts: {
     page: number;
     limit: number;
+    token?: string;
   }): Promise<ResponseDTO<PagedDTO<Photo>>> {
-    console.log(opts);
-    const res = await fetch(`${this.baseUrl}/midia?limit=10&created_at=2023`, {
+    const params = new URLSearchParams();
+    params.set("limit", opts.limit + "");
+    params.set("created_at", "2023");
+    if (opts.token) params.set("page_token", opts.token + "");
+    const res = await fetch(`${this.baseUrl}/midia?${params.toString()}`, {
       headers: { Authorization: `Bearer ${this.auth.getAccessToken()}` },
     });
     const data = (await res.json()) as SintesePaged<SintesePhoto>;
@@ -48,6 +53,7 @@ export class SintesePhotoService implements IPhotoService {
       data: {
         items: items,
         page_count: data.data.page_count,
+        page_token: data.data.page_token,
         has_more: data.data.has_more,
       },
     };

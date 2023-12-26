@@ -9,6 +9,7 @@ export interface IPhotoService {
   fetchPhotos(opts: {
     page: number;
     limit: number;
+    token?: string;
   }): Promise<ResponseDTO<PagedDTO<Photo>>>;
 }
 

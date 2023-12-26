@@ -8,6 +8,7 @@ import authSlice from "@store/auth/reducers/auth";
 export interface State<T = any> {
   data?: T;
   has_more?: boolean;
+  page_token?: string;
   status: ActionStatus;
   error?: { message: string };
 }

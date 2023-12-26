@@ -242,12 +242,12 @@ footer p {
 
 @media (max-width: 1024px) {
   .gallery {
-    grid-template-columns: 1fr
+    grid-template-columns: 1fr 1fr
   }
 }
 
 @media (max-width: 648px) {
-  .search {
-    display: none;
+  .gallery {
+    grid-template-columns: 1fr
   }
 }

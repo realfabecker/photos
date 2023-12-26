@@ -8,6 +8,7 @@ const initialState = {
     status: ActionStatus.IDLE,
     data: [],
     has_more: false,
+    page_token: "",
   } as State<Photo[]>,
 };
 
@@ -31,6 +32,7 @@ export const photoSlice = createSlice({
             ...(state["photos/list"].data || []),
             ...action.payload.data.items,
           ],
+          page_token: action.payload.data?.page_token,
           has_more: action.payload.data.has_more,
         };
       }

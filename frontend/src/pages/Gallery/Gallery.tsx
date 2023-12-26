@@ -36,7 +36,7 @@ const ActionsSection = (opts: {
 
 export default function Gallery() {
   const dispatch = useAppDispatch();
-  const [params, setParams] = useState({ page: 1, limit: 6 });
+  const [params, setParams] = useState({ page: 1, limit: 3 });
   const photos = useAppSelector((state) => state.photos["photos/list"]);
 
   useEffect(() => {
@@ -44,6 +44,7 @@ export default function Gallery() {
       getActionLoadPhotoList({
         page: params.page,
         limit: params.limit,
+        token: photos.page_token,
       })
     );
   }, [dispatch, params]);
@@ -59,15 +60,15 @@ export default function Gallery() {
     return <ErrorSection message={photos?.error?.message || "Ops!"} />;
   }
 
-  let i = 0;
+  let k = 0;
   return (
     <>
       <h1>Galeria</h1>
 
       <section className="gallery">
-        {(photos.data || []).map((p) => {
-          const delay = 0.4 + i * 0.2;
-          i = i >= params.limit ? 0 : i + 1;
+        {(photos.data || []).map((p, i) => {
+          k = i === 0 ? 0 : k > 0 && k % (params.limit - 1) === 0 ? 0 : k + 1;
+          const delay = Math.floor((0.4 + k * 0.2) * 10) / 10;
           return <Photo key={p.id} photo={p} delay={delay} />;
         })}
       </section>
