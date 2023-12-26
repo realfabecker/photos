@@ -22,6 +22,6 @@ type PhotoService interface {
 }
 
 type MidiaSigner interface {
-	GetObjectUrl(name string, lifetime int64) (string, error)
+	GetObjectUrl(url string, lifetime int64) (string, error)
 	PutObjectUrl(name string, lifetime int64) (string, error)
 }
