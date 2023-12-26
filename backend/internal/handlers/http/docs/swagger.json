@@ -10,7 +10,7 @@
         },
         "version": "1.0"
     },
-    "basePath": "/api/photos",
+    "basePath": "/photos",
     "paths": {
         "/auth/change": {
             "post": {
@@ -75,6 +75,46 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/ResponseDTO-UserToken"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/bucket/upload-url": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get photo upload url",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Bucket"
+                ],
+                "summary": "Get photo upload url",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filename",
+                        "name": "file",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseDTO-MidiaUpload"
                         }
                     },
                     "400": {
@@ -323,6 +363,15 @@
                 }
             }
         },
+        "MidiaUpload": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "example": "https://images.com.br/image.jpg"
+                }
+            }
+        },
         "PagedDTO-Photo": {
             "type": "object",
             "properties": {
@@ -348,14 +397,20 @@
         "Photo": {
             "type": "object",
             "required": [
+                "fileName",
                 "photoId",
                 "title",
+                "url",
                 "userId"
             ],
             "properties": {
                 "createdAt": {
                     "type": "string",
                     "example": "2023-04-07T16:45:30Z"
+                },
+                "fileName": {
+                    "type": "string",
+                    "example": "image.jpg"
                 },
                 "photoId": {
                     "type": "string",
@@ -372,6 +427,26 @@
                 "userId": {
                     "type": "string",
                     "example": "e8ec3241-03b4-4aed-99d5-d72e1922d9b8"
+                }
+            }
+        },
+        "ResponseDTO-MidiaUpload": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 200
+                },
+                "data": {
+                    "$ref": "#/definitions/MidiaUpload"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Operação realizada com sucesso"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "success"
                 }
             }
         },

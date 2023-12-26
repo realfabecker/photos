@@ -93,6 +93,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/bucket/upload-url": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get photo upload url",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Bucket"
+                ],
+                "summary": "Get photo upload url",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filename",
+                        "name": "file",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ResponseDTO-MidiaUpload"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/photos": {
             "get": {
                 "security": [
@@ -330,6 +370,15 @@ const docTemplate = `{
                 }
             }
         },
+        "MidiaUpload": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "example": "https://images.com.br/image.jpg"
+                }
+            }
+        },
         "PagedDTO-Photo": {
             "type": "object",
             "properties": {
@@ -355,14 +404,20 @@ const docTemplate = `{
         "Photo": {
             "type": "object",
             "required": [
+                "fileName",
                 "photoId",
                 "title",
+                "url",
                 "userId"
             ],
             "properties": {
                 "createdAt": {
                     "type": "string",
                     "example": "2023-04-07T16:45:30Z"
+                },
+                "fileName": {
+                    "type": "string",
+                    "example": "image.jpg"
                 },
                 "photoId": {
                     "type": "string",
@@ -379,6 +434,26 @@ const docTemplate = `{
                 "userId": {
                     "type": "string",
                     "example": "e8ec3241-03b4-4aed-99d5-d72e1922d9b8"
+                }
+            }
+        },
+        "ResponseDTO-MidiaUpload": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 200
+                },
+                "data": {
+                    "$ref": "#/definitions/MidiaUpload"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Operação realizada com sucesso"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "success"
                 }
             }
         },
@@ -510,7 +585,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
-	BasePath:         "/api/photos",
+	BasePath:         "/photos",
 	Schemes:          []string{},
 	Title:            "photos Rest API",
 	Description:      "photos Rest API",

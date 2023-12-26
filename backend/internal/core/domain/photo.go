@@ -15,6 +15,11 @@ type Photo struct {
 	CreatedAt string `json:"createdAt" example:"2023-04-07T16:45:30Z"`
 } // @name	Photo
 
+// MidiaUpload @description Midia information
+type MidiaUpload struct {
+	Url string `json:"url" example:"https://images.com.br/image.jpg"`
+} // @name MidiaUpload
+
 type PhotoPagedDTOQuery struct {
 	PagedDTOQuery
 	CreatedAt *int32       `query:"created_at" validate:"omitempty" example:"2023"`

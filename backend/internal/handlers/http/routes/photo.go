@@ -232,11 +232,11 @@ func (w *PhotoController) PutPhoto(c *fiber.Ctx) error {
 //
 //	@Summary		Get photo upload url
 //	@Description	Get photo upload url
-//	@Tags			Photos
+//	@Tags			Bucket
 //	@Security		ApiKeyAuth
 //	@Produce		json
-//	@Param			fileName	path	string	true	"Filename"
-//	@Success		200			{object}
+//	@Param			file	query		string	true	"Filename"
+//	@Success		200		{object}	cordom.ResponseDTO[cordom.MidiaUpload]
 //	@Failure		400
 //	@Failure		500
 //	@Router			/bucket/upload-url [get]
@@ -266,10 +266,10 @@ func (w *PhotoController) GetUploadUrl(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest)
 	}
 
-	return c.JSON(cordom.ResponseDTO[map[string]string]{
+	return c.JSON(cordom.ResponseDTO[cordom.MidiaUpload]{
 		Status: "success",
-		Data: &map[string]string{
-			"url": url,
+		Data: &cordom.MidiaUpload{
+			Url: url,
 		},
 	})
 }

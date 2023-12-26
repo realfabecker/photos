@@ -1,4 +1,4 @@
-basePath: /api/photos
+basePath: /photos
 definitions:
   EmptyResponseDTO:
     properties:
@@ -10,6 +10,12 @@ definitions:
         type: string
       status:
         example: success
+        type: string
+    type: object
+  MidiaUpload:
+    properties:
+      url:
+        example: https://images.com.br/image.jpg
         type: string
     type: object
   PagedDTO-Photo:
@@ -32,6 +38,9 @@ definitions:
       createdAt:
         example: "2023-04-07T16:45:30Z"
         type: string
+      fileName:
+        example: image.jpg
+        type: string
       photoId:
         example: 2023050701GXEH91YBVV40C1FK50S1P0KC
         type: string
@@ -45,9 +54,25 @@ definitions:
         example: e8ec3241-03b4-4aed-99d5-d72e1922d9b8
         type: string
     required:
+    - fileName
     - photoId
     - title
+    - url
     - userId
+    type: object
+  ResponseDTO-MidiaUpload:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        $ref: '#/definitions/MidiaUpload'
+      message:
+        example: Operação realizada com sucesso
+        type: string
+      status:
+        example: success
+        type: string
     type: object
   ResponseDTO-PagedDTO-Photo:
     properties:
@@ -184,6 +209,31 @@ paths:
       summary: User login
       tags:
       - Auth
+  /bucket/upload-url:
+    get:
+      description: Get photo upload url
+      parameters:
+      - description: Filename
+        in: query
+        name: file
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ResponseDTO-MidiaUpload'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get photo upload url
+      tags:
+      - Bucket
   /photos:
     get:
       description: List photos
