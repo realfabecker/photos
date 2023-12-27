@@ -14,7 +14,7 @@ export default function Photo(opts: { photo: TPhoto; delay?: number }) {
       <figcaption className="details">
         <h2>{photo.title}</h2>
         <div className="tags">
-          {photo.tags.map((t) => (
+          {(photo.tags || []).map((t) => (
             <span key={t}>{t}</span>
           ))}
         </div>

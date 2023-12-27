@@ -18,7 +18,7 @@ type S3MidiaSigner struct {
 	bucketName     string
 }
 
-func NewS3MidiaSigner(bucketName string, keyPrefix string, client *s3.Client) ports.MidiaSigner {
+func NewS3MidiaSigner(bucketName string, keyPrefix string, client *s3.Client) ports.MidiaBucket {
 	return &S3MidiaSigner{
 		bucketName:     bucketName,
 		keyPrefix:      keyPrefix,

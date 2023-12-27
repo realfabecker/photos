@@ -21,7 +21,7 @@ type PhotoService interface {
 	GetUploadUrl(user string, name string) (string, error)
 }
 
-type MidiaSigner interface {
+type MidiaBucket interface {
 	GetObjectUrl(url string, lifetime int64) (string, error)
 	PutObjectUrl(name string, lifetime int64) (string, error)
 	DeleteObject(name string) error

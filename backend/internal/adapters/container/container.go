@@ -53,7 +53,7 @@ func init() {
 		return s3.NewFromConfig(env), nil
 	})
 
-	Container.Provide(func(cnf *cordom.Config, client *s3.Client) (corpts.MidiaSigner, error) {
+	Container.Provide(func(cnf *cordom.Config, client *s3.Client) (corpts.MidiaBucket, error) {
 		if cnf.BucketName == "" {
 			return nil, fmt.Errorf("bucket name is required for midia bucket")
 		}
@@ -81,7 +81,7 @@ func init() {
 		return payrep.NewWalletDynamoDBRepository(d, cnf.DynamoDBTableName, cnf.AppName)
 	})
 
-	Container.Provide(func(r corpts.PhotoRepository, m corpts.MidiaSigner) corpts.PhotoService {
+	Container.Provide(func(r corpts.PhotoRepository, m corpts.MidiaBucket) corpts.PhotoService {
 		return corsrv.NewPhotoService(r, m)
 	})
 

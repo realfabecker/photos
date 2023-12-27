@@ -12,7 +12,7 @@ export type PagedDTO<T> = {
 
 export type Photo = {
   id: string;
-  tags: string[];
+  tags?: string[];
   url: string;
   fileName?: string;
   title: string;
@@ -39,6 +39,7 @@ export enum RoutesEnum {
 export enum ProviderEnum {
   Lambda = "lambda",
   Picsum = "picsum",
+  Local = "local",
 }
 
 export enum ModalState {

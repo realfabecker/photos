@@ -8,11 +8,11 @@ import (
 
 type PhotoService struct {
 	PhotoRepository corpts.PhotoRepository
-	MidiaSigner     corpts.MidiaSigner
+	MidiaBucket     corpts.MidiaBucket
 }
 
-func NewPhotoService(r corpts.PhotoRepository, m corpts.MidiaSigner) corpts.PhotoService {
-	return &PhotoService{PhotoRepository: r, MidiaSigner: m}
+func NewPhotoService(r corpts.PhotoRepository, m corpts.MidiaBucket) corpts.PhotoService {
+	return &PhotoService{PhotoRepository: r, MidiaBucket: m}
 }
 
 func (s *PhotoService) ListPhotos(email string, q cordom.PhotoPagedDTOQuery) (*cordom.PagedDTO[cordom.Photo], error) {
@@ -21,7 +21,7 @@ func (s *PhotoService) ListPhotos(email string, q cordom.PhotoPagedDTOQuery) (*c
 		return nil, err
 	}
 	for i, v := range p.Items {
-		if p.Items[i].Url, err = s.MidiaSigner.GetObjectUrl(v.Url, 1800); err != nil {
+		if p.Items[i].Url, err = s.MidiaBucket.GetObjectUrl(v.Url, 1800); err != nil {
 			return nil, err
 		}
 	}
@@ -33,7 +33,7 @@ func (s *PhotoService) CreatePhoto(p *cordom.Photo) (*cordom.Photo, error) {
 	if err != nil {
 		return nil, err
 	}
-	if p.Url, err = s.MidiaSigner.GetObjectUrl(p.Url, 1800); err != nil {
+	if p.Url, err = s.MidiaBucket.GetObjectUrl(p.Url, 1800); err != nil {
 		return nil, err
 	}
 	return p, nil
@@ -44,7 +44,7 @@ func (s *PhotoService) PutPhoto(p *cordom.Photo) (*cordom.Photo, error) {
 	if err != nil {
 		return nil, err
 	}
-	if p.Url, err = s.MidiaSigner.GetObjectUrl(p.Url, 1800); err != nil {
+	if p.Url, err = s.MidiaBucket.GetObjectUrl(p.Url, 1800); err != nil {
 		return nil, err
 	}
 	return p, nil
@@ -55,7 +55,7 @@ func (s *PhotoService) GetPhotoById(user string, photo string) (*cordom.Photo, e
 	if err != nil {
 		return nil, err
 	}
-	if p.Url, err = s.MidiaSigner.GetObjectUrl(p.Url, 1800); err != nil {
+	if p.Url, err = s.MidiaBucket.GetObjectUrl(p.Url, 1800); err != nil {
 		return nil, err
 	}
 	return p, nil
@@ -66,7 +66,7 @@ func (s *PhotoService) DeletePhoto(user string, photo string) error {
 	if err != nil {
 		return err
 	}
-	if err := s.MidiaSigner.DeleteObject(p.Url); err != nil {
+	if err := s.MidiaBucket.DeleteObject(p.Url); err != nil {
 		return err
 	}
 	return s.PhotoRepository.DeletePhoto(user, photo)
@@ -74,5 +74,5 @@ func (s *PhotoService) DeletePhoto(user string, photo string) error {
 
 func (s *PhotoService) GetUploadUrl(user string, name string) (string, error) {
 	key := user + "/" + time.Now().Format("2006/01/02") + "/" + name
-	return s.MidiaSigner.PutObjectUrl(key, 1800)
+	return s.MidiaBucket.PutObjectUrl(key, 1800)
 }

@@ -6,7 +6,7 @@ import { IAuthService } from "@core/ports/ports";
 export class LocalAuthService implements IAuthService {
   constructor(
     private readonly baseUrl: string = import.meta.env.VITE_API_BASE_URL,
-    private readonly storage = localStorage,
+    private readonly storage = sessionStorage,
     private readonly authKey = "_lauth"
   ) {}
 
