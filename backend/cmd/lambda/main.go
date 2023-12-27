@@ -9,6 +9,8 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/realfabecker/photos/internal/adapters/container"
 
+	"github.com/gofiber/fiber/v2"
+
 	fiberadapter "github.com/awslabs/aws-lambda-go-api-proxy/fiber"
 	cordom "github.com/realfabecker/photos/internal/core/domain"
 	corpts "github.com/realfabecker/photos/internal/core/ports"
