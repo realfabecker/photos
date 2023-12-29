@@ -21,7 +21,6 @@ type HttpHandler struct {
 	app             *fiber.App
 	photoConfig     *cordom.Config
 	photoController *routes.PhotoController
-	usersController *routes.AuthController
 	authService     corpts.AuthService
 }
 
@@ -41,7 +40,6 @@ type HttpHandler struct {
 func NewFiberHandler(
 	photoConfig *cordom.Config,
 	photoController *routes.PhotoController,
-	usersController *routes.AuthController,
 	authService corpts.AuthService,
 ) corpts.HttpHandler {
 
@@ -72,7 +70,6 @@ func NewFiberHandler(
 		app,
 		photoConfig,
 		photoController,
-		usersController,
 		authService,
 	}
 }
@@ -100,17 +97,13 @@ func (a *HttpHandler) Register() error {
 	a.app.Get("/docs/*", swagger.HandlerDefault)
 	photos := a.app.Group("/photos")
 
-	auth := photos.Group("/auth")
-	auth.Post("/login", a.usersController.Login)
-	auth.Post("/change", a.usersController.Change)
-
-	pics := photos.Group("/midia")
-	pics.Use(a.authHandler)
-	pics.Post("/", a.photoController.CreatePhoto)
-	pics.Get("/", a.photoController.ListPhotos)
-	pics.Get("/:photoId", a.photoController.GetPhotoById)
-	pics.Delete("/:photoId", a.photoController.DeletePhoto)
-	pics.Put("/:photoId", a.photoController.PutPhoto)
+	midia := photos.Group("/midia")
+	midia.Use(a.authHandler)
+	midia.Post("/", a.photoController.CreatePhoto)
+	midia.Get("/", a.photoController.ListPhotos)
+	midia.Get("/:photoId", a.photoController.GetPhotoById)
+	midia.Delete("/:photoId", a.photoController.DeletePhoto)
+	midia.Put("/:photoId", a.photoController.PutPhoto)
 
 	sign := photos.Group("/bucket")
 	sign.Use(a.authHandler)

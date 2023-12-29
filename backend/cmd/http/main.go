@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/realfabecker/photos/internal/adapters/container"
+	"github.com/realfabecker/photos/internal/adapters"
 	cordom "github.com/realfabecker/photos/internal/core/domain"
 	corpts "github.com/realfabecker/photos/internal/core/ports"
 )

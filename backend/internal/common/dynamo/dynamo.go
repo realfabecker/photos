@@ -2,10 +2,8 @@ package dynamo
 
 import (
 	"encoding/json"
-
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
-
-	"github.com/realfabecker/photos/internal/adapters/common/lock"
+	"github.com/realfabecker/photos/internal/common/lock"
 )
 
 type DecodedPageToken struct {

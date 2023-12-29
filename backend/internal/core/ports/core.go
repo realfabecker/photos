@@ -21,3 +21,7 @@ type JwtHandler interface {
 	VerifyWithKeyURL(token string, keyUrl string) (*jwt.RegisteredClaims, error)
 	VerifyWithKeySet(t string, keySet jwk.Set) (*jwt.RegisteredClaims, error)
 }
+
+type AuthService interface {
+	Verify(token string) (*jwt.RegisteredClaims, error)
+}

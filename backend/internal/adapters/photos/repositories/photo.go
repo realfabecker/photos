@@ -9,8 +9,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
-	"github.com/realfabecker/photos/internal/adapters/common/dynamo"
-	"github.com/realfabecker/photos/internal/adapters/common/validator"
+	"github.com/realfabecker/photos/internal/common/dynamo"
+	"github.com/realfabecker/photos/internal/common/validator"
 	cordom "github.com/realfabecker/photos/internal/core/domain"
 	corpts "github.com/realfabecker/photos/internal/core/ports"
 )

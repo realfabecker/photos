@@ -3,7 +3,7 @@ package routes
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/realfabecker/photos/internal/adapters/common/validator"
+	"github.com/realfabecker/photos/internal/common/validator"
 	cordom "github.com/realfabecker/photos/internal/core/domain"
 	corpts "github.com/realfabecker/photos/internal/core/ports"
 )
