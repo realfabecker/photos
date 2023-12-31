@@ -17,7 +17,7 @@ export class SinteseAuthService implements IAuthService {
     email: string;
     password: string;
   }): Promise<void> {
-    const resp = await fetch(`${this.baseUrl}/auth/login`, {
+    const resp = await fetch(`${this.baseUrl}/auth3/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),

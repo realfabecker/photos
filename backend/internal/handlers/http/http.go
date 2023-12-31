@@ -24,19 +24,16 @@ type HttpHandler struct {
 	authService     corpts.AuthService
 }
 
-//	@title			photos Rest API
-//	@version		1.0
-//	@description	photos Rest API
-
-//	@license.name	Apache 2.0
-//	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
-
-//	@BasePath	/photos
-
-// @securityDefinitions.apikey	ApiKeyAuth
-// @in							header
-// @name						Authorization
-// @description				Type 'Bearer ' and than your API token
+//	@title						Photos Rest API
+//	@version					1.0
+//	@description				Photos Rest API
+//	@license.name				Apache 2.0
+//	@license.url				http://www.apache.org/licenses/LICENSE-2.0.htm
+//	@BasePath					/photos
+//	@securityDefinitions.apikey	ApiKeyAuth
+//	@in							header
+//	@name						Authorization
+//	@description				Type 'Bearer ' and than your API token
 func NewFiberHandler(
 	photoConfig *cordom.Config,
 	photoController *routes.PhotoController,

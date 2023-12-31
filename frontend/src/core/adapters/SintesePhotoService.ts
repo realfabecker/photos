@@ -39,9 +39,12 @@ export class SintesePhotoService implements IPhotoService {
     params.set("limit", opts.limit + "");
     params.set("created_at", "2023");
     if (opts.token) params.set("page_token", opts.token + "");
-    const res = await fetch(`${this.baseUrl}/midia?${params.toString()}`, {
-      headers: { Authorization: `Bearer ${this.auth.getAccessToken()}` },
-    });
+    const res = await fetch(
+      `${this.baseUrl}/photos/midia?${params.toString()}`,
+      {
+        headers: { Authorization: `Bearer ${this.auth.getAccessToken()}` },
+      }
+    );
     const data = (await res.json()) as SinteseResDTO<
       SintesePagedDTO<SintesePhoto>
     >;
@@ -65,9 +68,12 @@ export class SintesePhotoService implements IPhotoService {
 
   async getUploadUrl(name: string): Promise<string> {
     await new Promise((resolve) => setTimeout(() => resolve(true), 300));
-    const res = await fetch(`${this.baseUrl}/bucket/upload-url?file=${name}`, {
-      headers: { Authorization: `Bearer ${this.auth.getAccessToken()}` },
-    });
+    const res = await fetch(
+      `${this.baseUrl}/buck3t/photos/upload-url?file=${name}`,
+      {
+        headers: { Authorization: `Bearer ${this.auth.getAccessToken()}` },
+      }
+    );
     const data = (await res.json()) as SinteseResDTO<{ url: string }>;
     return data.data.url;
   }
@@ -79,7 +85,7 @@ export class SintesePhotoService implements IPhotoService {
   }
 
   async createPhoto(photo: Partial<Photo>): Promise<ResponseDTO<Photo>> {
-    const res = await fetch(`${this.baseUrl}/midia`, {
+    const res = await fetch(`${this.baseUrl}/photos/midia`, {
       headers: {
         Authorization: `Bearer ${this.auth.getAccessToken()}`,
         "Content-Type": "application/json",
