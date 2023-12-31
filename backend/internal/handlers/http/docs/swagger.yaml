@@ -1,4 +1,3 @@
-basePath: /photos
 definitions:
   EmptyResponseDTO:
     properties:
@@ -91,7 +90,7 @@ info:
   title: Photos Rest API
   version: "1.0"
 paths:
-  /photos:
+  /photos/media:
     get:
       description: List photos
       parameters:
@@ -104,9 +103,9 @@ paths:
         in: query
         name: page_token
         type: string
-      - description: Photo due date
+      - description: Created at
         in: query
-        name: due_date
+        name: created_at
         required: true
         type: string
       produces:
@@ -150,7 +149,7 @@ paths:
       summary: Create a photo
       tags:
       - Photos
-  /photos/{photoId}:
+  /photos/media/{photoId}:
     delete:
       description: Delete photo
       parameters:

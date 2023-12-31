@@ -10,9 +10,8 @@
         },
         "version": "1.0"
     },
-    "basePath": "/photos",
     "paths": {
-        "/photos": {
+        "/photos/media": {
             "get": {
                 "security": [
                     {
@@ -43,8 +42,8 @@
                     },
                     {
                         "type": "string",
-                        "description": "Photo due date",
-                        "name": "due_date",
+                        "description": "Created at",
+                        "name": "created_at",
                         "in": "query",
                         "required": true
                     }
@@ -105,7 +104,7 @@
                 }
             }
         },
-        "/photos/{photoId}": {
+        "/photos/media/{photoId}": {
             "get": {
                 "security": [
                     {

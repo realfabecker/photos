@@ -17,7 +17,7 @@ import (
 	"github.com/realfabecker/photos/internal/handlers/http/routes"
 )
 
-type HttpHandler struct {
+type Handler struct {
 	app             *fiber.App
 	photoConfig     *cordom.Config
 	photoController *routes.PhotoController
@@ -29,7 +29,6 @@ type HttpHandler struct {
 //	@description				Photos Rest API
 //	@license.name				Apache 2.0
 //	@license.url				http://www.apache.org/licenses/LICENSE-2.0.htm
-//	@BasePath					/photos
 //	@securityDefinitions.apikey	ApiKeyAuth
 //	@in							header
 //	@name						Authorization
@@ -63,7 +62,7 @@ func NewFiberHandler(
 			})
 		},
 	})
-	return &HttpHandler{
+	return &Handler{
 		app,
 		photoConfig,
 		photoController,
@@ -71,15 +70,15 @@ func NewFiberHandler(
 	}
 }
 
-func (a *HttpHandler) GetApp() interface{} {
+func (a *Handler) GetApp() interface{} {
 	return a.app
 }
 
-func (a *HttpHandler) Listen(port string) error {
+func (a *Handler) Listen(port string) error {
 	return a.app.Listen(":" + port)
 }
 
-func (a *HttpHandler) Register() error {
+func (a *Handler) Register() error {
 	a.app.Use(limiter.New(limiter.Config{
 		Max:        100,
 		Expiration: 30 * time.Second,
@@ -94,18 +93,17 @@ func (a *HttpHandler) Register() error {
 	a.app.Get("/docs/*", swagger.HandlerDefault)
 	photos := a.app.Group("/photos")
 
-	midia := photos.Group("/midia")
-	midia.Use(a.authHandler)
-	midia.Post("/", a.photoController.CreatePhoto)
-	midia.Get("/", a.photoController.ListPhotos)
-	midia.Get("/:photoId", a.photoController.GetPhotoById)
-	midia.Delete("/:photoId", a.photoController.DeletePhoto)
-	midia.Put("/:photoId", a.photoController.PutPhoto)
+	media := photos.Group("/media")
+	media.Use(a.authHandler)
+	media.Post("/", a.photoController.CreatePhoto)
+	media.Get("/", a.photoController.ListPhotos)
+	media.Get("/:photoId", a.photoController.GetPhotoById)
+	media.Delete("/:photoId", a.photoController.DeletePhoto)
+	media.Put("/:photoId", a.photoController.PutPhoto)
 	return nil
 }
 
-// authHandler
-func (a *HttpHandler) authHandler(c *fiber.Ctx) error {
+func (a *Handler) authHandler(c *fiber.Ctx) error {
 	auth := c.Get("authorization")
 	if len(auth) < (len("bearer") + 1) {
 		return fiber.NewError(fiber.ErrUnauthorized.Code)

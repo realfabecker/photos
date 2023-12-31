@@ -54,6 +54,9 @@ func (s *PhotoService) GetPhotoById(user string, photo string) (*cordom.Photo, e
 	if err != nil {
 		return nil, err
 	}
+	if p == nil {
+		return nil, nil
+	}
 	if p.Url, err = s.MidiaBucket.GetObjectUrl(p.Url, 1800); err != nil {
 		return nil, err
 	}

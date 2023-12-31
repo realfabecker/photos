@@ -2,7 +2,6 @@ package container
 
 import (
 	"context"
-	"fmt"
 	awsconf "github.com/aws/aws-sdk-go-v2/config"
 	cognito "github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
@@ -64,9 +63,6 @@ func reg3() error {
 	}
 
 	if err := Container.Provide(func(cnf *cordom.Config, client *s3.Client) (corpts.MidiaBucket, error) {
-		if cnf.BucketName == "" {
-			return nil, fmt.Errorf("bucket name is required for midia bucket")
-		}
 		return phtsrv.NewS3MidiaSigner(cnf.BucketName, "photos", client), nil
 	}); err != nil {
 		return err

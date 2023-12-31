@@ -31,11 +31,11 @@ func NewPhotoController(
 //	@Produce		json
 //	@Param			limit		query		number	true	"Number of records"
 //	@Param			page_token	query		string	false	"Pagination token"
-//	@Param			due_date	query		string	true	"Photo due date"
+//	@Param			created_at	query		string	true	"Created at"
 //	@Success		200			{object}	cordom.ResponseDTO[cordom.PagedDTO[cordom.Photo]]
 //	@Failure		400
 //	@Failure		500
-//	@Router			/photos [get]
+//	@Router			/photos/media [get]
 func (w *PhotoController) ListPhotos(c *fiber.Ctx) error {
 	q := cordom.PhotoPagedDTOQuery{}
 	if err := c.QueryParser(&q); err != nil {
@@ -74,7 +74,7 @@ func (w *PhotoController) ListPhotos(c *fiber.Ctx) error {
 //	@Success		200	{object}	cordom.ResponseDTO[cordom.Photo]
 //	@Failure		400
 //	@Failure		500
-//	@Router			/photos/{photoId} [get]
+//	@Router			/photos/media/{photoId} [get]
 func (w *PhotoController) GetPhotoById(c *fiber.Ctx) error {
 	p := cordom.Photo{}
 	if err := c.ParamsParser(&p); err != nil {
@@ -115,7 +115,7 @@ func (w *PhotoController) GetPhotoById(c *fiber.Ctx) error {
 //	@Success		200		{object}	cordom.ResponseDTO[cordom.Photo]
 //	@Failure		400
 //	@Failure		500
-//	@Router			/photos [post]
+//	@Router			/photos/media [post]
 func (w *PhotoController) CreatePhoto(c *fiber.Ctx) error {
 	user, ok := c.Locals("user").(*jwt.RegisteredClaims)
 	if !ok {
@@ -150,7 +150,7 @@ func (w *PhotoController) CreatePhoto(c *fiber.Ctx) error {
 //	@Success		200	{object}	cordom.EmptyResponseDTO
 //	@Failure		400
 //	@Failure		500
-//	@Router			/photos/{photoId} [delete]
+//	@Router			/photos/media/{photoId} [delete]
 func (w *PhotoController) DeletePhoto(c *fiber.Ctx) error {
 	p := cordom.Photo{}
 	if err := c.ParamsParser(&p); err != nil {
@@ -193,7 +193,7 @@ func (w *PhotoController) DeletePhoto(c *fiber.Ctx) error {
 //	@Success		200		{object}	cordom.ResponseDTO[cordom.Photo]
 //	@Failure		400
 //	@Failure		500
-//	@Router			/photos/{photoId} [put]
+//	@Router			/photos/media/{photoId} [put]
 func (w *PhotoController) PutPhoto(c *fiber.Ctx) error {
 	user, ok := c.Locals("user").(*jwt.RegisteredClaims)
 	if !ok {

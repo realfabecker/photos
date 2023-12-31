@@ -19,7 +19,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/photos": {
+        "/photos/media": {
             "get": {
                 "security": [
                     {
@@ -50,8 +50,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Photo due date",
-                        "name": "due_date",
+                        "description": "Created at",
+                        "name": "created_at",
                         "in": "query",
                         "required": true
                     }
@@ -112,7 +112,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/photos/{photoId}": {
+        "/photos/media/{photoId}": {
             "get": {
                 "security": [
                     {
@@ -369,7 +369,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
-	BasePath:         "/photos",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Photos Rest API",
 	Description:      "Photos Rest API",
