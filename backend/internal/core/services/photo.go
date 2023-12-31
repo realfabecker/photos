@@ -3,7 +3,6 @@ package services
 import (
 	cordom "github.com/realfabecker/photos/internal/core/domain"
 	corpts "github.com/realfabecker/photos/internal/core/ports"
-	"time"
 )
 
 type PhotoService struct {
@@ -70,9 +69,4 @@ func (s *PhotoService) DeletePhoto(user string, photo string) error {
 		return err
 	}
 	return s.PhotoRepository.DeletePhoto(user, photo)
-}
-
-func (s *PhotoService) GetUploadUrl(user string, name string) (string, error) {
-	key := user + "/" + time.Now().Format("2006/01/02") + "/" + name
-	return s.MidiaBucket.PutObjectUrl(key, 1800)
 }

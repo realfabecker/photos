@@ -104,10 +104,6 @@ func (a *HttpHandler) Register() error {
 	midia.Get("/:photoId", a.photoController.GetPhotoById)
 	midia.Delete("/:photoId", a.photoController.DeletePhoto)
 	midia.Put("/:photoId", a.photoController.PutPhoto)
-
-	sign := photos.Group("/bucket")
-	sign.Use(a.authHandler)
-	sign.Get("/upload-url", a.photoController.GetUploadUrl)
 	return nil
 }
 

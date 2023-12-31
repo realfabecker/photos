@@ -18,7 +18,6 @@ type PhotoService interface {
 	PutPhoto(p *cordom.Photo) (*cordom.Photo, error)
 	GetPhotoById(user string, photo string) (*cordom.Photo, error)
 	DeletePhoto(user string, photo string) error
-	GetUploadUrl(user string, name string) (string, error)
 }
 
 type MidiaBucket interface {
