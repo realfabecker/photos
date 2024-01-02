@@ -37,7 +37,7 @@ export class SintesePhotoService implements IPhotoService {
   }): Promise<ResponseDTO<PagedDTO<Photo>>> {
     const params = new URLSearchParams();
     params.set("limit", opts.limit + "");
-    params.set("created_at", "2023");
+    params.set("created_at", new Date().getFullYear() + "");
     if (opts.token) params.set("page_token", opts.token + "");
     const res = await fetch(
       `${this.baseUrl}/photos/media?${params.toString()}`,
