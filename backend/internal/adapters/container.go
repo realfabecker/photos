@@ -6,9 +6,8 @@ import (
 	cognito "github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/realfabecker/photos/internal/common/cache"
 	"github.com/realfabecker/photos/internal/common/dotenv"
-	"github.com/realfabecker/photos/internal/common/jwt"
+	"github.com/realfabecker/photos/internal/common/jwt2"
 	"log"
 
 	payrep "github.com/realfabecker/photos/internal/adapters/photos/repositories"
@@ -68,14 +67,8 @@ func reg3() error {
 		return err
 	}
 
-	if err := Container.Provide(func() corpts.CacheHandler {
-		return cache.NewFileCache()
-	}); err != nil {
-		return err
-	}
-
-	if err := Container.Provide(func(cache corpts.CacheHandler) corpts.JwtHandler {
-		return jwt.NewJwtHandler(cache)
+	if err := Container.Provide(func() corpts.JwtHandler {
+		return jwt2.NewHandler()
 	}); err != nil {
 		return err
 	}
@@ -103,10 +96,9 @@ func reg3() error {
 	}
 
 	if err := Container.Provide(func(
-		walletConfig *cordom.Config,
 		jwtHandler corpts.JwtHandler,
 	) corpts.AuthService {
-		return usrsrv.NewCognitoAuthService(walletConfig.CognitoJwkUrl, jwtHandler)
+		return usrsrv.NewCognitoAuthService(jwtHandler)
 	}); err != nil {
 		return err
 	}
