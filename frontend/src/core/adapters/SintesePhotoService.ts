@@ -40,7 +40,7 @@ export class SintesePhotoService implements IPhotoService {
     params.set("created_at", "2023");
     if (opts.token) params.set("page_token", opts.token + "");
     const res = await fetch(
-      `${this.baseUrl}/photos/midia?${params.toString()}`,
+      `${this.baseUrl}/photos/media?${params.toString()}`,
       {
         headers: { Authorization: `Bearer ${this.auth.getAccessToken()}` },
       }
@@ -85,7 +85,7 @@ export class SintesePhotoService implements IPhotoService {
   }
 
   async createPhoto(photo: Partial<Photo>): Promise<ResponseDTO<Photo>> {
-    const res = await fetch(`${this.baseUrl}/photos/midia`, {
+    const res = await fetch(`${this.baseUrl}/photos/media`, {
       headers: {
         Authorization: `Bearer ${this.auth.getAccessToken()}`,
         "Content-Type": "application/json",
